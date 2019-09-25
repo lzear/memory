@@ -4,12 +4,22 @@
   "private": true,
   "dependencies": {
     "@types/jest": "24.0.18",
+    "@types/lodash": "^4.14.139",
     "@types/node": "12.7.5",
     "@types/react": "16.9.2",
     "@types/react-dom": "16.9.0",
+    "@types/styled-components": "^4.1.19",
+    "antd": "^3.23.3",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-config-prettier": "^6.3.0",
+    "eslint-config-react-app": "^5.0.2",
+    "eslint-plugin-prettier": "^3.1.1",
+    "lodash": "^4.17.15",
+    "prettier": "^1.18.2",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "react-scripts": "3.1.2",
+    "styled-components": "^4.4.0",
     "typescript": "3.6.3"
   },
   "scripts": {
@@ -17,9 +27,6 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
   },
   "browserslist": {
     "production": [
