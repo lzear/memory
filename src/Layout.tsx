@@ -4,12 +4,11 @@ import { GameConfigContext } from './GameConfiguration';
 import ConfigForm from './ConfigForm';
 import Game from './Game';
 
-const L = styled.main`
+const Main = styled.main`
   max-width: 800px;
   margin: auto;
   padding: 10px;
 `;
-
 const Layout: React.FC = () => {
   const [state] = useContext(GameConfigContext);
   const [width, setWidth] = useState<number | null>(null);
@@ -20,9 +19,9 @@ const Layout: React.FC = () => {
     if (w) setWidth(w);
   }, []);
   return (
-    <L ref={ref}>
+    <Main ref={ref}>
       {!state.config && width ? <Game width={width} /> : <ConfigForm />}
-    </L>
+    </Main>
   );
 };
 

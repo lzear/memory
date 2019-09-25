@@ -164,7 +164,7 @@ const Game: FunctionComponent<{ width: number }> = ({ width }) => {
           type="success"
           message={
             <>
-              You won in {gameState.attempts} attempts.{' '}
+              You won! (In {gameState.attempts} attempts.){' '}
               <a
                 onClick={() => {
                   setSeed(Math.random());
