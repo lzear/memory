@@ -28,7 +28,7 @@ const Layout: React.FC = () => {
         {!state.config && width ? <Game width={width} /> : <ConfigForm />}
       </div>
       <div style={{ margin: '20px 0', textAlign: 'right', flex: '0 0 auto' }}>
-        <a href="https://github.com/lzear/spotipiano">
+        <a href="https://github.com/lzear/memory">
           <GithubOutlined />
         </a>
       </div>
