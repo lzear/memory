@@ -9,8 +9,7 @@ export const Card = styled.div<CardProps>`
   height: ${({ cardWidth }) => cardWidth}px;
   width: ${({ cardWidth }) => cardWidth}px;
   margin: 5px;
-  padding: 5px;
-  text-align: center;
+  padding: 0;
 `;
 
 export const BlankCard = styled(Card)`
@@ -20,16 +19,12 @@ export const BlankCard = styled(Card)`
 interface InteractiveCardProps {
   readonly active: boolean;
   readonly found: boolean;
+  readonly onClick: () => void;
 }
 
 export const InteractiveCard = styled(Card)<InteractiveCardProps>`
-background-color: lightgrey;
+  background-color: lightgrey;
   outline: ${({ active }) => (active ? '10px solid black' : 'none')};
-  /* 
-  background-color: ${({ active, found }) =>
-    active || found ? 'white' : 'lightgrey'};
-   visibility: ${({ found }) => (found ? 'hidden' : 'visible')};
-*/
 `;
 
 interface CardColorProps {
@@ -47,10 +42,29 @@ export const CardColor = styled(InteractiveCard)<CardColorProps>`
 interface CardImageProps {
   readonly url: string;
 }
-export const CardImage = styled(InteractiveCard)<CardImageProps>`
-  background-image: ${({ url, found, active }) =>
-    active || found ? `url("${url}")` : 'none'};
-`;
+export const CardImage: React.FC<
+  CardProps & CardImageProps & InteractiveCardProps
+> = ({ active, found, url, cardWidth, onClick }) => {
+  return (
+    <InteractiveCard
+      active={active}
+      found={found}
+      onClick={onClick}
+      cardWidth={cardWidth}
+    >
+      <img
+        alt=""
+        src={url}
+        style={{
+          display: 'block',
+          height: cardWidth,
+          width: cardWidth,
+          opacity: active || found ? 1 : 0,
+        }}
+      />
+    </InteractiveCard>
+  );
+};
 
 export const Row = styled.div`
   display: flex;

@@ -14,10 +14,7 @@ const init = { size: 4, cardType: CardTypes.Image, config: true };
 
 export const GameConfigContext = React.createContext<
   [Config, (prev: Config) => void]
->([
-  init, // initial context state
-  () => null, // setter
-]);
+>([init, () => null]);
 
 export const GameConfigProvider: React.FunctionComponent<{
   children: React.ReactNode;

@@ -1,56 +1,55 @@
 import React, { FunctionComponent, useContext } from 'react';
 import { InputNumber, Form, Button, Typography, Select } from 'antd';
-import { FormComponentProps } from 'antd/lib/form';
 import { CardTypes, GameConfigContext } from './GameConfiguration';
 
 const { Option } = Select;
 
-const ConfigForm: FunctionComponent<FormComponentProps> = ({ form }) => {
+const ConfigForm: FunctionComponent = () => {
   const [state, setState] = useContext(GameConfigContext);
-  const { getFieldDecorator, validateFields } = form;
+  const [form] = Form.useForm<{ size: number; cardType: CardTypes }>();
   return (
-    <Form
-      onSubmit={e => {
-        e.preventDefault();
-        validateFields((err, fields) => {
-          setState({
-            size: fields.size,
-            cardType: fields.type,
-            config: false,
-          });
+    <Form<{ size: number; cardType: CardTypes }>
+      initialValues={{ size: state.size, cardType: state.cardType }}
+      form={form}
+      onFinish={() => {
+        const fields = form.getFieldsValue();
+        setState({
+          size: fields.size,
+          cardType: fields.cardType,
+          config: false,
         });
       }}
     >
       <Typography.Title>Game options</Typography.Title>
-      <Form.Item label="Game size">
-        {getFieldDecorator('size', {
-          rules: [
-            {
-              type: 'integer',
-              required: true,
-              min: 2,
-              max: 8,
-            },
-          ],
-          initialValue: state.size,
-        })(<InputNumber min={2} max={8} />)}
+      <Form.Item
+        name={'size'}
+        label="Game size"
+        rules={[
+          {
+            type: 'integer',
+            required: true,
+            min: 2,
+            max: 8,
+          },
+        ]}
+      >
+        <InputNumber min={2} max={8} />
       </Form.Item>
-      <Form.Item label="Card type">
-        {getFieldDecorator('type', {
-          rules: [
-            {
-              required: true,
-              type: 'enum',
-              enum: Object.values(CardTypes),
-            },
-          ],
-          initialValue: state.cardType,
-        })(
-          <Select>
-            <Option value={CardTypes.Color}>Color</Option>
-            <Option value={CardTypes.Image}>Image</Option>
-          </Select>,
-        )}
+      <Form.Item
+        name={'cardType'}
+        label="Card type"
+        rules={[
+          {
+            required: true,
+            type: 'enum',
+            enum: Object.values(CardTypes),
+          },
+        ]}
+      >
+        <Select>
+          <Option value={CardTypes.Color}>Color</Option>
+          <Option value={CardTypes.Image}>Image</Option>
+        </Select>
       </Form.Item>
       <Form.Item>
         <Button htmlType="submit" type="primary">
@@ -61,4 +60,4 @@ const ConfigForm: FunctionComponent<FormComponentProps> = ({ form }) => {
   );
 };
 
-export default Form.create<FormComponentProps>()(ConfigForm);
+export default ConfigForm;

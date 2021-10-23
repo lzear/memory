@@ -1,10 +1,4 @@
-import React, {
-  FunctionComponent,
-  useContext,
-  useReducer,
-  useState,
-  useEffect,
-} from 'react';
+import React, { useContext, useReducer, useState, useEffect } from 'react';
 import { Alert, Button, Typography, Spin } from 'antd';
 import _ from 'lodash';
 import { CardTypes, GameConfigContext } from './GameConfiguration';
@@ -77,7 +71,7 @@ type Action =
   | { type: Actions.ClearActive }
   | { type: Actions.Reset };
 
-const Game: FunctionComponent<{ width: number }> = ({ width }) => {
+const Game: React.FC<{ width: number }> = ({ width }) => {
   const [context, setContext] = useContext(GameConfigContext);
   const { size, cardType } = context!;
   const cardWidth = Math.floor(width / size) - 6;
@@ -137,8 +131,9 @@ const Game: FunctionComponent<{ width: number }> = ({ width }) => {
   }, initialGameState(nbPairs));
 
   if (!distribution) return <Spin />;
+
   return (
-    <div>
+    <>
       <Typography.Title>Play</Typography.Title>
       <Button onClick={() => setContext({ ...context, config: true })}>
         Reconfigure
@@ -158,21 +153,22 @@ const Game: FunctionComponent<{ width: number }> = ({ width }) => {
       >
         Restart this game
       </Button>
-      {gameState.foundPairs.every(isFound => isFound) ? (
+      {gameState.foundPairs.every((isFound) => isFound) ? (
         <Alert
           style={{ marginTop: '5px' }}
           type="success"
           message={
             <>
               You won! (In {gameState.attempts} attempts.){' '}
-              <a
+              <Button
+                type="link"
                 onClick={() => {
                   setSeed(Math.random());
                   gameReducer({ type: Actions.Reset });
                 }}
               >
                 New game?
-              </a>
+              </Button>
             </>
           }
         />
@@ -180,13 +176,13 @@ const Game: FunctionComponent<{ width: number }> = ({ width }) => {
         <Alert
           style={{ marginTop: '5px' }}
           type="info"
-          message={'Attempts: ' + gameState.attempts}
+          message={`Attempts: ${gameState.attempts}`}
         />
       )}
       <div style={{ marginTop: '10px' }}>
-        {_.range(size).map(y => (
+        {_.range(size).map((y) => (
           <Row key={`${y}`}>
-            {_.range(context.size).map(x => {
+            {_.range(context.size).map((x) => {
               const pairIdx = distribution.board[y][x];
               if (pairIdx === null)
                 return <BlankCard key={x} cardWidth={cardWidth} />;
@@ -224,15 +220,7 @@ const Game: FunctionComponent<{ width: number }> = ({ width }) => {
           </Row>
         ))}
       </div>
-      {// For images to be loaded before the cards are clicked
-      cardType === CardTypes.Image && (
-        <div style={{ display: 'none' }}>
-          {(distribution.cardValues as string[]).map(url => (
-            <img src={url} alt="" key={url} />
-          ))}
-        </div>
-      )}
-    </div>
+    </>
   );
 };
 

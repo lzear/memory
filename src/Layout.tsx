@@ -1,4 +1,5 @@
 import React, { useContext, useRef, useEffect, useState } from 'react';
+import { GithubOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import { GameConfigContext } from './GameConfiguration';
 import ConfigForm from './ConfigForm';
@@ -8,6 +9,9 @@ const Main = styled.main`
   max-width: 800px;
   margin: auto;
   padding: 10px;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
 `;
 const Layout: React.FC = () => {
   const [state] = useContext(GameConfigContext);
@@ -20,7 +24,14 @@ const Layout: React.FC = () => {
   }, []);
   return (
     <Main ref={ref}>
-      {!state.config && width ? <Game width={width} /> : <ConfigForm />}
+      <div style={{ flex: '1 0 auto' }}>
+        {!state.config && width ? <Game width={width} /> : <ConfigForm />}
+      </div>
+      <div style={{ margin: '20px 0', textAlign: 'right', flex: '0 0 auto' }}>
+        <a href="https://github.com/lzear/spotipiano">
+          <GithubOutlined />
+        </a>
+      </div>
     </Main>
   );
 };
