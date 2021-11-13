@@ -1,5 +1,5 @@
-import React, { useContext, useReducer, useState, useEffect } from 'react';
-import { Alert, Button, Typography, Spin } from 'antd';
+import React, { useContext, useEffect, useReducer, useState } from 'react';
+import { Alert, Button, Spin, Typography } from 'antd';
 import _ from 'lodash';
 import { CardTypes, GameConfigContext } from './GameConfiguration';
 import { BlankCard, CardColor, CardImage, Row } from './Card';
@@ -16,11 +16,11 @@ type Distribution = {
   board: (number | null)[][];
 };
 
-const distribute = (
+const distribute = async (
   cardType: CardTypes,
   size: number,
   cardWidth: number,
-): Distribution => {
+): Promise<Distribution> => {
   const nCards = Math.floor(size ** 2 / 2);
   const cardIdxs = _.range(nCards);
   const cards = [...cardIdxs, ...cardIdxs];
@@ -28,14 +28,21 @@ const distribute = (
   let cardValues: number[] | string[];
   if (cardType === CardTypes.Color) {
     cardValues = cardIdxs.map((n: number) => (n * 360) / nCards);
-  } else {
-    // CardTypes.Image
+  } else if (cardType === CardTypes.Image) {
     cardValues = cardIdxs.map(
       () =>
         `https://picsum.photos/seed/${Math.random()
           .toString(36)
           .substring(7)}/${cardWidth}/${cardWidth}`,
     );
+  } else if (cardType === CardTypes.Dog) {
+    const r = await fetch(
+      `https://api.thedogapi.com/v1/images/search?limit=${cardIdxs.length}`,
+    );
+    const json = (await r.json()) as { url: string }[];
+    cardValues = json.map((v) => v.url);
+  } else {
+    throw new Error('Invalid card type ' + cardType);
   }
   return {
     cardValues,
@@ -78,9 +85,17 @@ const Game: React.FC<{ width: number }> = ({ width }) => {
   const nbPairs = Math.floor(size ** 2 / 2);
   const [distribution, setDistribution] = useState<Distribution | null>(null);
 
+  console.log(
+    '%c distribution',
+    'background: #222; color: #bada55',
+    distribution,
+  );
+
   const [seed, setSeed] = useState(Math.random()); // this is used to trigger a new distribution on change
   useEffect(() => {
-    setDistribution(distribute(cardType, size, cardWidth));
+    (async () => {
+      setDistribution(await distribute(cardType, size, cardWidth));
+    })();
   }, [cardType, cardWidth, size, seed]);
 
   // This reducer controls the card flipping
@@ -196,26 +211,42 @@ const Game: React.FC<{ width: number }> = ({ width }) => {
               );
               const onClick = () =>
                 gameReducer({ type: Actions.Click, value: [y, x] });
-              return cardType === CardTypes.Color ? (
-                <CardColor
-                  key={x}
-                  cardWidth={cardWidth}
-                  active={active}
-                  found={gameState.foundPairs[pairIdx]}
-                  pairIdx={pairIdx}
-                  nbPairs={nbPairs}
-                  onClick={onClick}
-                />
-              ) : (
-                <CardImage
-                  key={x}
-                  cardWidth={cardWidth}
-                  active={active}
-                  found={gameState.foundPairs[pairIdx]}
-                  onClick={onClick}
-                  url={distribution.cardValues[pairIdx].toString()}
-                />
-              );
+              if (cardType === CardTypes.Color)
+                return (
+                  <CardColor
+                    key={x}
+                    cardWidth={cardWidth}
+                    active={active}
+                    found={gameState.foundPairs[pairIdx]}
+                    pairIdx={pairIdx}
+                    nbPairs={nbPairs}
+                    onClick={onClick}
+                  />
+                );
+              if (cardType === CardTypes.Image)
+                return (
+                  <CardImage
+                    key={x}
+                    cardWidth={cardWidth}
+                    active={active}
+                    found={gameState.foundPairs[pairIdx]}
+                    onClick={onClick}
+                    url={distribution.cardValues[pairIdx].toString()}
+                  />
+                );
+              if (cardType === CardTypes.Dog)
+                return (
+                  <CardImage
+                    cover
+                    key={x}
+                    cardWidth={cardWidth}
+                    active={active}
+                    found={gameState.foundPairs[pairIdx]}
+                    onClick={onClick}
+                    url={distribution.cardValues[pairIdx].toString()}
+                  />
+                );
+              throw new Error('Invalid card type ' + cardType);
             })}
           </Row>
         ))}

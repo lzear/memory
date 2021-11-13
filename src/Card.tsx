@@ -41,10 +41,11 @@ export const CardColor = styled(InteractiveCard)<CardColorProps>`
 
 interface CardImageProps {
   readonly url: string;
+  readonly cover?: boolean;
 }
 export const CardImage: React.FC<
   CardProps & CardImageProps & InteractiveCardProps
-> = ({ active, found, url, cardWidth, onClick }) => {
+> = ({ active, found, url, cardWidth, onClick, cover }) => {
   return (
     <InteractiveCard
       active={active}
@@ -56,6 +57,7 @@ export const CardImage: React.FC<
         alt=""
         src={url}
         style={{
+          objectFit: cover ? 'cover' : undefined,
           display: 'block',
           height: cardWidth,
           width: cardWidth,

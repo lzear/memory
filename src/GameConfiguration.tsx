@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 export enum CardTypes {
   Color = 'COLOR',
   Image = 'IMAGE',
+  Dog = 'DOG',
 }
 
 type Config = {

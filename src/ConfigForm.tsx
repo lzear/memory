@@ -49,6 +49,7 @@ const ConfigForm: FunctionComponent = () => {
         <Select>
           <Option value={CardTypes.Color}>Color</Option>
           <Option value={CardTypes.Image}>Image</Option>
+          <Option value={CardTypes.Dog}>Dog</Option>
         </Select>
       </Form.Item>
       <Form.Item>
