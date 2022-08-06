@@ -18,10 +18,12 @@ Using more time, we could:
 * add animations,
 * add a bot
 
-### Favicon 
 
-This favicon was generated using the following graphics from Twitter Twemoji:
-- Graphics Title: 1f9e0.svg
-- Graphics Author: Copyright 2020 Twitter, Inc and other contributors (https://github.com/twitter/twemoji)
-- Graphics Source: https://github.com/twitter/twemoji/blob/master/assets/svg/1f9e0.svg
-- Graphics License: CC-BY 4.0 (https://creativecommons.org/licenses/by/4.0/)
+
+### <sub>Favicon</sub>
+
+<sub>This favicon was generated using the following graphics from Twitter Twemoji:</sub><br/>
+<sub>- Graphics Title: 1f9e0.svg</sub><br/>
+<sub>- Graphics Author: Copyright 2020 Twitter, Inc and other contributors (https://github.com/twitter/twemoji)</sub><br/>
+<sub>- Graphics Source: https://github.com/twitter/twemoji/blob/master/assets/svg/1f9e0.svg</sub><br/>
+<sub>- Graphics License: CC-BY 4.0 (https://creativecommons.org/licenses/by/4.0/)</sub>
